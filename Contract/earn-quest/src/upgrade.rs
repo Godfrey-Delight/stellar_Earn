@@ -64,6 +64,12 @@ pub fn rollback(env: &Env, target_version: u32) -> Result<(), Error> {
     for version in (target_version..current_version).rev() {
         run_rollback(env, version + 1)?;
         storage::set_data_version(env, version);
+
+        // Update version in config for consistency
+        if let Some(mut config) = storage::get_config(env) {
+            config.version = version;
+            storage::set_config(env, &config);
+        }
     }
 
     Ok(())

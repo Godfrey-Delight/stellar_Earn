@@ -15,6 +15,7 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { SubmissionsModule } from './modules/submissions/submissions.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { JobsModule } from './modules/jobs/jobs.module';
+import { UsersModule } from './modules/users/users.module';
 import { AnalyticsSnapshot } from './modules/analytics/entities/analytics-snapshot.entity';
 import { RefreshToken } from './modules/auth/entities/refresh-token.entity';
 import { Payout } from './modules/payouts/entities/payout.entity';
@@ -73,6 +74,7 @@ import { EventsModule } from './events/events.module';
     SubmissionsModule,
     NotificationsModule,
     JobsModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [

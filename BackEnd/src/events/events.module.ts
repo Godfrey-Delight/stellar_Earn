@@ -1,31 +1,23 @@
 import { Module, Global } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { eventsConfig } from '../config/events.config';
-import { EventAuditListener } from './listeners/event-audit.listener';
-import { UserListener } from './listeners/user.listener';
-import { QuestListener } from './listeners/quest.listener';
-import { PayoutListener } from './listeners/payout.listener';
-import { SubmissionListener } from './listeners/submission.listener';
+import { EventsService } from './events.service';
+import { AuditLogService } from './services/audit-log.service';
+import { RetryService } from './services/retry.service';
 
 @Global()
 @Module({
-  imports: [EventEmitterModule.forRoot(eventsConfig)],
-  providers: [
-    EventStoreService,
-    EventPersistenceListener,
-    DeadLetterQueueListener,
-    EventAuditListener,
-    UserListener,
-    QuestListener,
-    PayoutListener,
-    SubmissionListener,
-    EventStoreService,
-    QuestEventsHandler,
-    UserEventsHandler,
-    SubmissionEventsHandler,
-    DeadLetterHandler,
+  imports: [
+    EventEmitterModule.forRoot({
+      wildcard: true,
+      delimiter: '.',
+      newListener: false,
+      removeListener: false,
+      maxListeners: 20,
+      verboseMemoryLeak: true,
+      ignoreErrors: false,
+    }),
   ],
-  exports: [EventEmitterModule, EventStoreService],
+  providers: [EventsService, AuditLogService, RetryService],
+  exports: [EventsService],
 })
 export class EventsModule {}

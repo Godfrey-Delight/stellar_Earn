@@ -12,6 +12,7 @@ mod quest;
 mod reputation;
 mod storage;
 mod submission;
+pub mod templates;
 pub mod test;
 pub mod types;
 mod upgrade;

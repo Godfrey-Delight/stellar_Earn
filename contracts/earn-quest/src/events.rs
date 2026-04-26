@@ -151,10 +151,15 @@ pub fn proof_submitted(env: &Env, quest_id: Symbol, submitter: Address, proof_ha
 /// * Track all approvals for a user
 /// * Monitor verifier activity
 pub fn submission_approved(env: &Env, quest_id: Symbol, submitter: Address, verifier: Address) {
-    // Topics: [EventName, QuestID, Submitter] - indexed for lookups
-    let topics = (TOPIC_SUBMISSION_APPROVED, quest_id, submitter.clone());
-    // Data: verifier info
-    let data = (verifier,);
+    // Topics: [EventName, QuestID, Submitter, Verifier] - indexed for lookups
+    let topics = (
+        TOPIC_SUBMISSION_APPROVED,
+        quest_id,
+        submitter.clone(),
+        verifier.clone(),
+    );
+    // Data: empty because all filterable identity fields are indexed
+    let data = ();
     env.events().publish(topics, data);
 }
 
@@ -226,11 +231,17 @@ pub fn escrow_deposited(
     env: &Env,
     quest_id: Symbol,
     depositor: Address,
+    token: Address,
     amount: i128,
     total_balance: i128,
 ) {
-    // Topics: [EventName, QuestID, Depositor] - indexed
-    let topics = (TOPIC_ESCROW_DEPOSITED, quest_id, depositor.clone());
+    // Topics: [EventName, QuestID, Depositor, Token] - indexed
+    let topics = (
+        TOPIC_ESCROW_DEPOSITED,
+        quest_id,
+        depositor.clone(),
+        token.clone(),
+    );
     // Data: amounts
     let data = (amount, total_balance);
     env.events().publish(topics, data);
@@ -245,11 +256,12 @@ pub fn escrow_payout(
     env: &Env,
     quest_id: Symbol,
     recipient: Address,
+    token: Address,
     amount: i128,
     remaining: i128,
 ) {
-    // Topics: [EventName, QuestID, Recipient] - indexed
-    let topics = (TOPIC_ESCROW_PAYOUT, quest_id, recipient.clone());
+    // Topics: [EventName, QuestID, Recipient, Token] - indexed
+    let topics = (TOPIC_ESCROW_PAYOUT, quest_id, recipient.clone(), token.clone());
     // Data: amounts
     let data = (amount, remaining);
     env.events().publish(topics, data);
@@ -264,10 +276,11 @@ pub fn escrow_refunded(
     env: &Env,
     quest_id: Symbol,
     recipient: Address,
+    token: Address,
     amount: i128,
 ) {
-    // Topics: [EventName, QuestID, Recipient] - indexed
-    let topics = (TOPIC_ESCROW_REFUNDED, quest_id, recipient.clone());
+    // Topics: [EventName, QuestID, Recipient, Token] - indexed
+    let topics = (TOPIC_ESCROW_REFUNDED, quest_id, recipient.clone(), token.clone());
     // Data: amount
     let data = (amount,);
     env.events().publish(topics, data);

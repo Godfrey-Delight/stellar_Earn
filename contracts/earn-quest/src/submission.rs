@@ -160,7 +160,7 @@ pub fn approve_submissions_batch(
 
     // Pre-validate all addresses to fail fast
     for i in 0u32..len {
-        let s = submissions.get(i).unwrap();
+        let s = submissions.get(i).ok_or(Error::IndexOutOfBounds)?;
         validation::validate_addresses_distinct(verifier, &s.submitter)?;
     }
 

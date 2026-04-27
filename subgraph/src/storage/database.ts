@@ -357,13 +357,14 @@ export function getPlatformAggregates(): {
   totalRewardsDistributed: string;
   totalActiveUsers: number;
 } {
-  const totalQuests = (getDatabase().prepare('SELECT COUNT(*) as c FROM quests').get() as any).c;
-  const totalSubmissions = (getDatabase().prepare('SELECT COUNT(*) as c FROM submissions').get() as any).c;
-  const totalRewardsClaimed = (getDatabase().prepare("SELECT COUNT(*) as c FROM submissions WHERE status = 'Paid'").get() as any).c;
-  const totalActiveUsers = (getDatabase().prepare('SELECT COUNT(*) as c FROM user_stats').get() as any).c;
+  const d = getDatabase();
+  const totalQuests = (d.prepare('SELECT COUNT(*) as c FROM quests').get() as any).c;
+  const totalSubmissions = (d.prepare('SELECT COUNT(*) as c FROM submissions').get() as any).c;
+  const totalRewardsClaimed = (d.prepare("SELECT COUNT(*) as c FROM submissions WHERE status = 'Paid'").get() as any).c;
+  const totalActiveUsers = (d.prepare('SELECT COUNT(*) as c FROM user_stats').get() as any).c;
 
   let totalRewardsDistributed = BigInt(0);
-  const rows = getDatabase().prepare("SELECT reward_amount FROM quests WHERE status = 'Completed' OR status = 'Active'").all() as { reward_amount: string }[];
+  const rows = d.prepare("SELECT reward_amount FROM quests WHERE status = 'Completed' OR status = 'Active'").all() as { reward_amount: string }[];
   for (const r of rows) {
     totalRewardsDistributed += BigInt(r.reward_amount);
   }

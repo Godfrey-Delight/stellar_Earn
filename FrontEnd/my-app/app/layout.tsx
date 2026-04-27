@@ -13,6 +13,7 @@ import { ConsentBanner } from "@/components/analytics/ConsentBanner";
 import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { A11yAnnouncerProvider } from "@/components/a11y/A11yAnnouncer";
 import PerformanceMonitor from "@/components/ui/PerformanceMonitor";
+import { AppErrorBoundary } from "@/components/error/ErrorBoundary";
 
 
 const geistSans = Geist({
@@ -83,12 +84,14 @@ export default function RootLayout({
               <AuthProvider>
                 <AnalyticsProvider>
                   <ToastProvider>
-                    <SkipToContent />
-                    {children}
-                    <PerformanceMonitor />
-                    <ConsentBanner />
-                    <WalletConnectionModal />
-                    <SessionManager />
+                    <AppErrorBoundary>
+                      <SkipToContent />
+                      {children}
+                      <PerformanceMonitor />
+                      <ConsentBanner />
+                      <WalletConnectionModal />
+                      <SessionManager />
+                    </AppErrorBoundary>
                   </ToastProvider>
                 </AnalyticsProvider>
               </AuthProvider>

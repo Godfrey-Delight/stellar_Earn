@@ -6,6 +6,7 @@ import {
   StatsCards,
   ActiveQuests,
 } from "@/components/dashboard";
+import { ComponentErrorBoundary } from "@/components/error/ErrorBoundary";
 
 export default function DashboardPage() {
   const { stats, activeQuests, isLoading, error, refetch } = useUserStats();
@@ -45,12 +46,16 @@ export default function DashboardPage() {
 
       {/* Stats Cards */}
       <section className="mb-8" data-onboarding="dashboard-stats">
-        <StatsCards stats={stats} isLoading={isLoading} />
+        <ComponentErrorBoundary componentName="StatsCards">
+          <StatsCards stats={stats} isLoading={isLoading} />
+        </ComponentErrorBoundary>
       </section>
 
       {/* Active Quests */}
       <section data-onboarding="dashboard-active-quests">
-        <ActiveQuests quests={activeQuests} isLoading={isLoading} />
+        <ComponentErrorBoundary componentName="ActiveQuests">
+          <ActiveQuests quests={activeQuests} isLoading={isLoading} />
+        </ComponentErrorBoundary>
       </section>
     </DashboardLayout>
   );

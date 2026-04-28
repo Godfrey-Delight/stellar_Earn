@@ -6,18 +6,25 @@ import HeroSection from "@/components/homepage/HeroSection";
 import { HowItWorks } from "@/components/homepage/HowItWorks";
 import FeaturedQuests from "@/components/homepage/FeaturedQuests";
 import { FAQAccordion } from "@/components/homepage/FAQAccordion";
+import { ComponentErrorBoundary } from "@/components/error/ErrorBoundary";
 
 export default function Home() {
   return (
     <main id="main-content" className="flex flex-col">
       {/* Hero */}
-      <HeroSection />
+      <ComponentErrorBoundary componentName="HeroSection">
+        <HeroSection />
+      </ComponentErrorBoundary>
 
       {/* How It Works */}
-      <HowItWorks />
+      <ComponentErrorBoundary componentName="HowItWorks">
+        <HowItWorks />
+      </ComponentErrorBoundary>
 
       {/* Featured Quests */}
-      <FeaturedQuests />
+      <ComponentErrorBoundary componentName="FeaturedQuests">
+        <FeaturedQuests />
+      </ComponentErrorBoundary>
 
       {/* CTA */}
       <section className="bg-[#071020] px-4 py-20 sm:py-28">
